@@ -1,6 +1,6 @@
 {"id": "20260731_110446_90f5af32", "image_file": "images/20260731_110446_90f5af32.png", "predicted": "3 x = 4 y", "corrected": "3 x = 4 y", "timestamp": "2026-07-31T11:04:46.449744+00:00"}
 {"id": "20260731_110601_19b03eaa", "image_file": "images/20260731_110601_19b03eaa.png", "predicted": "P ( A n B )", "corrected": "P ( A \\cap B )", "timestamp": "2026-07-31T11:06:01.421002+00:00"}
-{"id": "20260731_110614_9a86bb0a", "image_file": "images/20260731_110614_9a86bb0a.png", "predicted": "P ( A u B )", "corrected": "P ( A u B )", "timestamp": "2026-07-31T11:06:14.463392+00:00"}
+{"id": "20260731_110614_9a86bb0a", "image_file": "images/20260731_110614_9a86bb0a.png", "predicted": "P ( A u B )", "corrected": "P ( A \\cup B )", "timestamp": "2026-07-31T11:06:14.463392+00:00"}
 {"id": "20260731_110622_2a915ca7", "image_file": "images/20260731_110622_2a915ca7.png", "predicted": "P ( A u B )", "corrected": "P ( A \\cup B )", "timestamp": "2026-07-31T11:06:22.247402+00:00"}
 {"id": "20260731_110649_e0fbeb82", "image_file": "images/20260731_110649_e0fbeb82.png", "predicted": "\\lim ( x )", "corrected": "\\ln ( x )", "timestamp": "2026-07-31T11:06:49.367844+00:00"}
 {"id": "20260731_111608_0cefb55a", "image_file": "images/20260731_111608_0cefb55a.png", "predicted": "\\log ( x )", "corrected": "\\ln ( x )", "timestamp": "2026-07-31T11:16:08.896559+00:00"}
@@ -18,7 +18,7 @@
 {"id": "20260731_113702_5d249ad5", "image_file": "images/20260731_113702_5d249ad5.png", "predicted": "B M B", "corrected": "B \\cap B", "timestamp": "2026-07-31T11:37:02.057067+00:00"}
 {"id": "20260731_113713_077a5be3", "image_file": "images/20260731_113713_077a5be3.png", "predicted": "A u B", "corrected": "A \\cap B", "timestamp": "2026-07-31T11:37:13.845888+00:00"}
 {"id": "20260731_113726_63a925aa", "image_file": "images/20260731_113726_63a925aa.png", "predicted": "P ( A M B )", "corrected": "P ( A \\cap B )", "timestamp": "2026-07-31T11:37:26.115999+00:00"}
-{"id": "20260731_113741_440acfdf", "image_file": "images/20260731_113741_440acfdf.png", "predicted": "A u B", "corrected": "A \\c B", "timestamp": "2026-07-31T11:37:41.528363+00:00"}
+{"id": "20260731_113741_440acfdf", "image_file": "images/20260731_113741_440acfdf.png", "predicted": "A u B", "corrected": "A \\cup B", "timestamp": "2026-07-31T11:37:41.528363+00:00"}
 {"id": "20260731_113746_9eefb4d3", "image_file": "images/20260731_113746_9eefb4d3.png", "predicted": "A u B", "corrected": "A \\cup B", "timestamp": "2026-07-31T11:37:46.302535+00:00"}
 {"id": "20260731_113804_ee7c466b", "image_file": "images/20260731_113804_ee7c466b.png", "predicted": "P ( A \\cap B )", "corrected": "P ( A \\cap B )", "timestamp": "2026-07-31T11:38:04.209555+00:00"}
 {"id": "20260731_113815_17cc1205", "image_file": "images/20260731_113815_17cc1205.png", "predicted": "P ( A | B )", "corrected": "P ( A | B )", "timestamp": "2026-07-31T11:38:15.633605+00:00"}
@@ -61,7 +61,7 @@
 {"id": "20260731_115305_c4ee3846", "image_file": "images/20260731_115305_c4ee3846.png", "predicted": "u ( x )", "corrected": "\\ln ( x )", "timestamp": "2026-07-31T11:53:05.116346+00:00"}
 {"id": "20260731_115319_3a32fdec", "image_file": "images/20260731_115319_3a32fdec.png", "predicted": "\\pi ( x ) ^ { 2 }", "corrected": "\\ln ( x )^{2}", "timestamp": "2026-07-31T11:53:19.958244+00:00"}
 {"id": "20260731_115345_187a21aa", "image_file": "images/20260731_115345_187a21aa.png", "predicted": "\\lim \\limits _ { x \\rightarrow + \\infty } f ( x )", "corrected": "\\lim \\limits_{x \\rightarrow + \\infty} f ( x )", "timestamp": "2026-07-31T11:53:45.118337+00:00"}
-{"id": "20260731_115416_dc5d8224", "image_file": "images/20260731_115416_dc5d8224.png", "predicted": "m a x f ( x )", "corrected": "\\max{f ( x )", "timestamp": "2026-07-31T11:54:16.629715+00:00"}
+{"id": "20260731_115416_dc5d8224", "image_file": "images/20260731_115416_dc5d8224.png", "predicted": "m a x f ( x )", "corrected": "\\max f ( x )", "timestamp": "2026-07-31T11:54:16.629715+00:00"}
 {"id": "20260731_115419_57aae273", "image_file": "images/20260731_115419_57aae273.png", "predicted": "m a x f ( x )", "corrected": "\\max{f ( x )}", "timestamp": "2026-07-31T11:54:19.362818+00:00"}
 {"id": "20260731_115446_00e5a81b", "image_file": "images/20260731_115446_00e5a81b.png", "predicted": "m i n", "corrected": "\\min", "timestamp": "2026-07-31T11:54:46.333238+00:00"}
 {"id": "20260731_115459_ddeba6ff", "image_file": "images/20260731_115459_ddeba6ff.png", "predicted": "\\sum j", "corrected": "\\{ \\}", "timestamp": "2026-07-31T11:54:59.615444+00:00"}
