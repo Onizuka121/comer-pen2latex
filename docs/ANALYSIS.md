@@ -96,46 +96,64 @@ modificate e aspetta una pausa nella scrittura prima di chiamare il backend.
 
 ## Fine-tuning
 
-Esperimento con `finetuning.py` (12 epoche, replay CROHME 1:1): 166 esempi
-in training, **35 tenuti da parte e mai visti** per la misura.
+Misura: 166 esempi in training, **35 tenuti da parte e mai visti**, 12
+epoche, replay CROHME 1:1. Con 35 esempi ogni esempio vale ~3 punti: le
+oscillazioni tra epoche sono rumore.
+
+### Esperimento 1: token nuovi inizializzati tutti uguali
 
 | epoca | tua scrittura (35 mai visti) | CROHME (150, beam 3) |
 |---|---|---|
-| prima (vocabolario esteso) | 28.6% | 60.7% |
-| 1 | 37.1% | 49.3% |
+| prima | 28.6% | 60.7% |
 | 4 | 51.4% | 56.7% |
-| 7 | **54.3%** | 55.3% |
-| 8 | **54.3%** | 58.7% |
+| 8 (migliore) | 54.3% | 58.7% |
 | 12 | 51.4% | 57.3% |
 
-Modello dell'epoca migliore, CROHME 2014 su 300 formule a beam 5 (stesso
-test della tabella del punto 1):
+Allenato poi su tutti i 201 esempi, indovinava solo il **65%** dei suoi stessi
+esempi di training: scambiava sempre ∪ con ∩ e `\ln` con `\cap`. Causa: i 23
+token nuovi partivano dallo stesso vettore (la media) e in 12 epoche non si
+separavano (nel layer di uscita `\cup` e `\cap` distavano 0.30, contro norme
+tipiche di 1.53).
 
-| checkpoint | CROHME 2014 |
-|---|---|
-| CoMER originale | 63.7% |
-| vecchio fine-tuning | 23.0% |
-| **nuovo fine-tuning** | **59.3%** |
+### Esperimento 2: inizializzazione per somiglianza visiva + learning rate x10 su embedding/uscita
 
-La tua scrittura passa da 28.6% a 54.3% di formule esattamente giuste,
-quasi senza perdere la scrittura generale. Con 35 esempi di validazione ogni
-esempio vale ~3 punti: le oscillazioni tra epoche sono rumore.
+`\cup` parte da `u`, `\cap` da `n`, `Z` da `z`, `\ln` da `\log`, ... (tabella
+`VISUAL_INIT` in `finetuning.py`); gli altri dalla media con rumore ampio.
 
-Il `finetuned_checkpoint.ckpt` nel repo è allenato con lo stesso schema su
-**tutti** i 201 esempi (`--all-data`), perché molti simboli hanno solo 1-4
-esempi e ognuno conta. La curva sopra è piatta dalla 7ª alla 12ª epoca, quindi
-l'ultima epoca è una scelta sicura.
+| epoca | tua scrittura (35 mai visti) | CROHME (150, beam 3) |
+|---|---|---|
+| prima | 25.7% | 44.0% |
+| 2 | 74.3% | 49.3% |
+| 4 | 80.0% | 58.7% |
+| 9 (migliore) | **82.9%** | 58.0% |
+| 12 | 82.9% | 56.7% |
+
+CROHME 2014, 300 formule, beam 5 (stesso test della tabella del punto 1):
+
+| checkpoint | tua scrittura (35 mai visti) | CROHME 2014 |
+|---|---|---|
+| CoMER originale | 28.6%* | 63.7% |
+| vecchio fine-tuning | non misurabile (allenato anche su quelli) | 23.0% |
+| esperimento 1 | 54.3% | 59.3% |
+| **esperimento 2** | **82.9%** | 57.3% |
+
+\* con il vocabolario esteso: l'originale non conosce `\cup`, `\cap`, ...
+
+Il `finetuned_checkpoint.ckpt` nel repo usa la configurazione
+dell'esperimento 2 allenata su **tutti** i 201 esempi (`--all-data`), perché
+molti simboli hanno 1-4 esempi e ognuno conta. La curva è stabile dalla 9ª
+alla 12ª epoca, quindi l'ultima epoca è una scelta sicura.
 
 ### Errori rimasti e come ridurli
 
-- **∪ scambiato per ∩**: nel dataset `\cap` compare 45 volte, `\cup` 14. Il
-  modello tende verso il simbolo più frequente: servono più esempi di ∪.
-- **Simboli con meno di 5 esempi** (`\ln`, `\max`, `\min`, `\subset`,
-  `\implies`, `\mathcal`, `\quad`, ...) non sono ancora appresi: `\max f(x)`
-  diventa `m a x f ( x )`. Servono ~10 esempi ciascuno.
-- `finetuning.py --check` mostra il conteggio per simbolo e avvisa per quelli
-  sotto i 5 esempi.
+Sui 35 esempi mai visti restano 6 errori: `Z`/`z` (2), `\max` scritto come
+`m a x` (2 esempi in tutto il dataset), `\mathbb{N}` (1), una cifra persa (1).
 
-Un'altra etichetta errata trovata dagli errori di validazione: `{5}` (che in
-MathJax non mostra le graffe) per l'insieme `\{5\}`. Il validatore ora
-segnala le graffe "nude".
+- **Simboli con meno di 5 esempi** (`\ln`, `\max`, `\min`, `\subset`,
+  `\implies`, `\mathcal`, `\quad`, ...): servono ~10 esempi ciascuno.
+  `finetuning.py --check` mostra il conteggio e avvisa.
+- Tieni bilanciati i simboli simili (oggi 45 `\cap` contro 14 `\cup`).
+
+Etichette errate trovate grazie agli errori di validazione: `{5}` (che in
+MathJax non mostra le graffe) per l'insieme `\{5\}`. Il validatore ora segnala
+le graffe "nude".

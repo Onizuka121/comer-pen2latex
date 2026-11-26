@@ -109,8 +109,7 @@ python evaluate.py --split val
 **Consigli per esempi utili:** correggi sempre il testo prima di inserire (un
 esempio confermato sbagliato insegna l'errore); per un simbolo nuovo servono
 almeno ~10 esempi; tieni bilanciati i simboli che si somigliano (oggi nel
-dataset ci sono 45 `\cap` e solo 14 `\cup`, e infatti ∪ viene spesso letto
-come ∩); per gli insiemi scrivi `\{ \}`, non `{ }`; anche altre persone possono raccogliere esempi con il plugin
+dataset ci sono 45 `\cap` e solo 14 `\cup`); per gli insiemi scrivi `\{ \}`, non `{ }`; anche altre persone possono raccogliere esempi con il plugin
 e allenare un modello sulla propria scrittura.
 
 ## Impostazioni del backend
