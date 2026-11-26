@@ -214,12 +214,35 @@ class Crohme(object):
 # Modello
 # ---------------------------------------------------------------------------
 
+# Token nuovo -> token esistente che gli somiglia visivamente.  I suoi pesi
+# partono da li': cosi' ad esempio \cup (da "u") e \cap (da "n") sono
+# distinti fin dall'inizio, invece di partire identici e restare confusi
+# (misurato: con un'inizializzazione uguale per tutti, dopo 12 epoche il
+# modello scambiava ancora quasi sempre il simbolo di unione con quello di
+# intersezione).
+VISUAL_INIT = {
+    "\\cup": "u", "\\bigcup": "u", "\\cap": "n", "\\bigcap": "n",
+    "Z": "z", "O": "o", "U": "u", "K": "k", "W": "w", "Q": "q", "J": "j",
+    "D": "\\Delta", "\\ln": "\\log", "\\exp": "\\log", "\\emptyset": "\\phi",
+    "\\varnothing": "\\phi", "\\varphi": "\\phi", "\\implies": "\\rightarrow",
+    "\\Rightarrow": "\\rightarrow", "\\to": "\\rightarrow",
+    "\\leftrightarrow": "\\rightarrow", "\\Leftrightarrow": "\\rightarrow",
+    "\\binom": "(", "\\max": "\\lim", "\\min": "\\lim", "\\sup": "\\lim",
+    "\\inf": "\\lim", ":": ".", "\\Omega": "\\pi",
+    "\\cot": "\\cos", "\\sec": "\\sin", "\\csc": "\\cos", "\\prod": "\\Pi",
+    "\\omega": "w", "\\epsilon": "\\in", "\\varepsilon": "\\in",
+}
+VOCAB_PARAMS = ("comer_model.decoder.word_embed.0.weight",
+                "comer_model.decoder.proj.weight",
+                "comer_model.decoder.proj.bias")
+
+
 def build_model(base_ckpt_path: str, new_tokens: List[str]):
     """Carica il checkpoint base ed estende il vocabolario con new_tokens.
 
-    I pesi dei token nuovi partono dalla media di quelli esistenti (meglio
-    di valori casuali: il modello parte "neutro" invece che con preferenze
-    arbitrarie).
+    I pesi di un token nuovo partono da quelli del token esistente piu'
+    simile (VISUAL_INIT) o, se non c'e', dalla media di tutti con rumore
+    abbastanza ampio da distinguerli tra loro.
     """
     import torch
     from comer.datamodule.vocab import vocab
@@ -229,6 +252,7 @@ def build_model(base_ckpt_path: str, new_tokens: List[str]):
     base_words = checkpoint_words(ckpt)
     words = base_words + [t for t in new_tokens if t not in base_words]
     vocab.load_words(words)
+    old_index = {w: i + 3 for i, w in enumerate(base_words)}
 
     from comer.lit_comer import LitCoMER
 
@@ -237,27 +261,25 @@ def build_model(base_ckpt_path: str, new_tokens: List[str]):
     new_state = model.state_dict()
     old_state = ckpt["state_dict"]
     n_old = len(base_words) + 3
+    gen = torch.Generator().manual_seed(0)
     for name, t in new_state.items():
         old = old_state[name]
         if old.shape == t.shape:
             new_state[name] = old
             continue
-        if name in ("comer_model.decoder.word_embed.0.weight",
-                    "comer_model.decoder.proj.weight",
-                    "comer_model.decoder.proj.bias"):
-            t = t.clone()
-            t[:n_old] = old
-            if t.shape[0] > n_old:
-                mean = old[3:].mean(dim=0)
-                if t.dim() == 2:
-                    std = old[3:].std(dim=0)
-                    noise = torch.randn(t.shape[0] - n_old, t.shape[1]) * std * 0.1
-                    t[n_old:] = mean + noise
-                else:
-                    t[n_old:] = mean
-            new_state[name] = t
-            continue
-        raise RuntimeError("forma inattesa per %s: %s vs %s" % (name, old.shape, t.shape))
+        if name not in VOCAB_PARAMS:
+            raise RuntimeError("forma inattesa per %s: %s vs %s" % (name, old.shape, t.shape))
+        t = t.clone()
+        t[:n_old] = old
+        mean = old[3:].mean(dim=0)
+        std = old[3:].std(dim=0)
+        for row in range(n_old, t.shape[0]):
+            src = old_index.get(VISUAL_INIT.get(words[row - 3], ""))
+            if src is not None:
+                t[row] = old[src]
+            else:
+                t[row] = mean + torch.randn(mean.shape, generator=gen) * std * 0.5
+        new_state[name] = t
     model.load_state_dict(new_state, strict=True)
     return model, hparams, words, base_words
 
@@ -316,6 +338,8 @@ def main(argv=None) -> None:
     ap.add_argument("--epochs", type=int, default=int(os.environ.get("FINETUNE_EPOCHS", "12")))
     ap.add_argument("--lr", type=float, default=float(os.environ.get("FINETUNE_LR", "1e-4")))
     ap.add_argument("--batch-size", type=int, default=4)
+    ap.add_argument("--head-lr-mult", type=float, default=10.0,
+                    help="moltiplicatore del learning rate per embedding/proiezione dei token")
     ap.add_argument("--replay", type=float, default=1.0,
                     help="esempi CROHME per ogni esempio tuo, per epoca (0 = disattiva)")
     ap.add_argument("--val-frac", type=float, default=0.15)
@@ -386,13 +410,22 @@ def main(argv=None) -> None:
     t0 = time.time()
     base_user = evaluate(model, val_s, args.beam)[0] if val_s else float("nan")
     base_crohme = evaluate(model, crohme_val, args.beam)[0] if crohme_val else float("nan")
-    print("Prima del fine-tuning: validazione tua=%.3f  CROHME=%.3f  (%.0fs)"
-          % (base_user, base_crohme, time.time() - t0))
+    print("Prima del fine-tuning:%s  CROHME=%.3f  (%.0fs)"
+          % ("  validazione tua=%.3f" % base_user if val_s else "", base_crohme, time.time() - t0))
 
     # ---- ottimizzatore: warmup + coseno ----
     freeze_batchnorm(model)
     params = [p for p in model.parameters() if p.requires_grad]
-    opt = torch.optim.Adam(params, lr=args.lr)
+    # embedding e proiezione finale (dove vivono i token nuovi) imparano piu'
+    # in fretta: i token nuovi devono separarsi tra loro in poche epoche
+    named = dict(model.named_parameters())
+    head = [named[n] for n in VOCAB_PARAMS]
+    head_ids = set(id(p) for p in head)
+    body = [p for p in params if id(p) not in head_ids]
+    groups = [{"params": body, "mult": 1.0}, {"params": head, "mult": args.head_lr_mult}]
+    opt = torch.optim.Adam([{"params": g["params"], "lr": args.lr * g["mult"]} for g in groups])
+    for g, spec in zip(opt.param_groups, groups):
+        g["mult"] = spec["mult"]
     n_replay = int(round(len(train_s) * args.replay)) if crohme_train else 0
     steps_per_epoch = int(math.ceil((len(train_s) + n_replay) / float(args.batch_size)))
     total = steps_per_epoch * args.epochs
@@ -428,7 +461,7 @@ def main(argv=None) -> None:
         losses = []
         for b in batches:
             for g in opt.param_groups:
-                g["lr"] = lr_at(step)
+                g["lr"] = lr_at(step) * g["mult"]
             x, mask, idx = make_batch(b)
             tgt, out = to_bi_tgt_out(idx, torch.device("cpu"))
             loss = ce_loss(model(x, mask, tgt), out)
@@ -444,7 +477,9 @@ def main(argv=None) -> None:
         if val_s or crohme_val:
             u = evaluate(model, val_s, args.beam)[0] if val_s else float("nan")
             c = evaluate(model, crohme_val, args.beam)[0] if crohme_val else float("nan")
-            msg += "  validazione tua=%.3f  CROHME=%.3f" % (u, c)
+            if val_s:
+                msg += "  validazione tua=%.3f" % u
+            msg += "  CROHME=%.3f" % c
             # punteggio: prima la tua scrittura, CROHME come spareggio
             score = u + 0.25 * (0.0 if math.isnan(c) else c)
             if val_s and (best is None or score > best[0]):
