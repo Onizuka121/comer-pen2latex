@@ -1,0 +1,23 @@
+{
+	"name": "pen2latex",
+	"version": "0.2.0",
+	"description": "Scrivi formule a mano in Obsidian e convertile in LaTeX (backend CoMER locale)",
+	"main": "main.js",
+	"private": true,
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"test": "node tests/ink.test.mjs"
+	},
+	"license": "MIT",
+	"devDependencies": {
+		"@codemirror/state": "6.4.1",
+		"@codemirror/view": "6.26.3",
+		"@types/node": "20.14.9",
+		"builtin-modules": "3.3.0",
+		"esbuild": "0.21.5",
+		"obsidian": "1.5.7-1",
+		"tslib": "2.6.3",
+		"typescript": "5.4.5"
+	}
+}

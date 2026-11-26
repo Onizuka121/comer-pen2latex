@@ -10,7 +10,10 @@
 		"importHelpers": true,
 		"isolatedModules": true,
 		"strictNullChecks": true,
-		"lib": ["DOM", "ES2020"]
+		"lib": ["DOM", "DOM.Iterable", "ES2020"],
+		"strict": true,
+		"skipLibCheck": true,
+		"noEmit": true
 	},
-	"include": ["**/*.ts"]
+	"include": ["main.ts", "src/**/*.ts"]
 }

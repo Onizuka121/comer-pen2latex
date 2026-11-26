@@ -1,9 +1,9 @@
 {
 	"id": "pen2latex",
 	"name": "Pen to LaTeX",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"minAppVersion": "1.0.0",
-	"description": "Disegna una formula col pennino e convertila in MathJax/LaTeX tramite un backend OCR locale.",
+	"description": "Scrivi formule (anche esercizi interi, su più righe) con la penna e convertile in LaTeX/MathJax con un backend CoMER locale.",
 	"author": "Koala",
 	"isDesktopOnly": true
 }
