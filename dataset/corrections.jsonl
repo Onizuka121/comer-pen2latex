@@ -16,7 +16,7 @@
 {"id": "20260731_112042_052c6914", "image_file": "images/20260731_112042_052c6914.png", "predicted": "P ( A ) = \\frac { P ( A / B ) } { P ( B ) }", "corrected": "P ( A ) = \\frac {P ( A | B )} {P ( B )}", "timestamp": "2026-07-31T11:20:42.842450+00:00"}
 {"id": "20260731_112126_d9f0e122", "image_file": "images/20260731_112126_d9f0e122.png", "predicted": "3 x + 4 y", "corrected": "3 x + 4 y", "timestamp": "2026-07-31T11:21:26.987852+00:00"}
 {"id": "20260731_113702_5d249ad5", "image_file": "images/20260731_113702_5d249ad5.png", "predicted": "B M B", "corrected": "B \\cap B", "timestamp": "2026-07-31T11:37:02.057067+00:00"}
-{"id": "20260731_113713_077a5be3", "image_file": "images/20260731_113713_077a5be3.png", "predicted": "A u B", "corrected": "A \\cap B", "timestamp": "2026-07-31T11:37:13.845888+00:00"}
+{"id": "20260731_113713_077a5be3", "image_file": "images/20260731_113713_077a5be3.png", "predicted": "A u B", "corrected": "A \\cup B", "timestamp": "2026-07-31T11:37:13.845888+00:00"}
 {"id": "20260731_113726_63a925aa", "image_file": "images/20260731_113726_63a925aa.png", "predicted": "P ( A M B )", "corrected": "P ( A \\cap B )", "timestamp": "2026-07-31T11:37:26.115999+00:00"}
 {"id": "20260731_113741_440acfdf", "image_file": "images/20260731_113741_440acfdf.png", "predicted": "A u B", "corrected": "A \\cup B", "timestamp": "2026-07-31T11:37:41.528363+00:00"}
 {"id": "20260731_113746_9eefb4d3", "image_file": "images/20260731_113746_9eefb4d3.png", "predicted": "A u B", "corrected": "A \\cup B", "timestamp": "2026-07-31T11:37:46.302535+00:00"}
@@ -132,13 +132,13 @@
 {"id": "20260731_123939_c27ad88b", "image_file": "images/20260731_123939_c27ad88b.png", "predicted": "p = ( \\frac { n } { k } )", "corrected": "p =  \\binom {n} {k}", "timestamp": "2026-07-31T12:39:39.003228+00:00"}
 {"id": "20260731_124045_74f24bd9", "image_file": "images/20260731_124045_74f24bd9.png", "predicted": "\\frac { n ! } { n ( n - k ) }", "corrected": "\\frac {n !} {n! ( n - k )!}", "timestamp": "2026-07-31T12:40:45.446280+00:00"}
 {"id": "20260731_124108_b03d0bdf", "image_file": "images/20260731_124108_b03d0bdf.png", "predicted": "2 x + 4 =", "corrected": "\\cancel{2 x} + 4 =", "timestamp": "2026-07-31T12:41:08.331241+00:00"}
-{"id": "20260731_124126_915960c1", "image_file": "images/20260731_124126_915960c1.png", "predicted": "\\ { , 2 , \\ }", "corrected": "\\{, 2 , \\}", "timestamp": "2026-07-31T12:41:26.186942+00:00"}
+{"id": "20260731_124126_915960c1", "image_file": "images/20260731_124126_915960c1.png", "predicted": "\\ { , 2 , \\ }", "corrected": "\\{ 1 , 2 , \\}", "timestamp": "2026-07-31T12:41:26.186942+00:00"}
 {"id": "20260731_124131_631f422a", "image_file": "images/20260731_124131_631f422a.png", "predicted": "\\ { , 2 , \\ }", "corrected": "\\{ 1,  2 \\}", "timestamp": "2026-07-31T12:41:31.044351+00:00"}
 {"id": "20260731_124223_fcc7986e", "image_file": "images/20260731_124223_fcc7986e.png", "predicted": "\\frac { n ! } { 5 ! 3 ! 7 ! }", "corrected": "\\frac {n !} {5 ! 3 ! 7 !}", "timestamp": "2026-07-31T12:42:23.037331+00:00"}
 {"id": "20260731_124238_a7fabb85", "image_file": "images/20260731_124238_a7fabb85.png", "predicted": "0 . 3", "corrected": "0 . 3", "timestamp": "2026-07-31T12:42:38.765764+00:00"}
 {"id": "20260731_124303_e48bc453", "image_file": "images/20260731_124303_e48bc453.png", "predicted": "0 . 2", "corrected": "0.2", "timestamp": "2026-07-31T12:43:03.846009+00:00"}
 {"id": "20260731_124317_fa43e7ac", "image_file": "images/20260731_124317_fa43e7ac.png", "predicted": "\\forall x \\in \\mathbb { R }", "corrected": "\\forall x \\in \\mathbb {R}", "timestamp": "2026-07-31T12:43:17.019680+00:00"}
-{"id": "20260731_124410_00a9df6b", "image_file": "images/20260731_124410_00a9df6b.png", "predicted": "F _ { X } ( t ) \\in \\forall x \\in R", "corrected": "F_{x} ( t ) \\leq n \\quad \\forall x \\in R", "timestamp": "2026-07-31T12:44:10.106754+00:00"}
+{"id": "20260731_124410_00a9df6b", "image_file": "images/20260731_124410_00a9df6b.png", "predicted": "F _ { X } ( t ) \\in \\forall x \\in R", "corrected": "F_{x} ( t ) \\leq n \\quad \\forall x \\in \\mathbb{R}", "timestamp": "2026-07-31T12:44:10.106754+00:00"}
 {"id": "20260731_124501_667bff4d", "image_file": "images/20260731_124501_667bff4d.png", "predicted": "A ( x ) = Z \\forall x \\in N", "corrected": "A ( x ) = n \\quad \\forall x \\in \\mathbb{N}", "timestamp": "2026-07-31T12:45:01.239416+00:00"}
 {"id": "20260731_124548_31b6990a", "image_file": "images/20260731_124548_31b6990a.png", "predicted": "p ^ { 1 } = 3", "corrected": "p' = 3", "timestamp": "2026-07-31T12:45:48.011904+00:00"}
 {"id": "20260731_124617_82856669", "image_file": "images/20260731_124617_82856669.png", "predicted": "5 3 7 4 3 2 | = 5 !", "corrected": "5 3 7 4 3 2 1 = 5 !", "timestamp": "2026-07-31T12:46:17.032768+00:00"}
