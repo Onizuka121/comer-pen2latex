@@ -128,7 +128,7 @@
 {"id": "20260731_123730_c367ea4d", "image_file": "images/20260731_123730_c367ea4d.png", "predicted": "\\binom { n + k - 1 } { k }", "corrected": "\\binom {n + k - 1} {k}", "timestamp": "2026-07-31T12:37:30.129061+00:00"}
 {"id": "20260731_123823_7b839674", "image_file": "images/20260731_123823_7b839674.png", "predicted": "\\binom { ( x ) } = ( \\frac { n + k - 1 } { k } )", "corrected": "C_{n,k}^{(r)} = \\binom {n + k - 1} {k}", "timestamp": "2026-07-31T12:38:23.458212+00:00"}
 {"id": "20260731_123920_c39faffb", "image_file": "images/20260731_123920_c39faffb.png", "predicted": "\\frac { n } { k }", "corrected": "\\frac {n} {k}", "timestamp": "2026-07-31T12:39:20.337577+00:00"}
-{"id": "20260731_123931_21552d48", "image_file": "images/20260731_123931_21552d48.png", "predicted": "p = ( \\frac { n } { k } )", "corrected": "p = ( \\frac {n} {k} )", "timestamp": "2026-07-31T12:39:31.102246+00:00"}
+{"id": "20260731_123931_21552d48", "image_file": "images/20260731_123931_21552d48.png", "predicted": "p = ( \\frac { n } { k } )", "corrected": "p = \\binom{n}{k}", "timestamp": "2026-07-31T12:39:31.102246+00:00"}
 {"id": "20260731_123939_c27ad88b", "image_file": "images/20260731_123939_c27ad88b.png", "predicted": "p = ( \\frac { n } { k } )", "corrected": "p =  \\binom {n} {k}", "timestamp": "2026-07-31T12:39:39.003228+00:00"}
 {"id": "20260731_124045_74f24bd9", "image_file": "images/20260731_124045_74f24bd9.png", "predicted": "\\frac { n ! } { n ( n - k ) }", "corrected": "\\frac {n !} {n! ( n - k )!}", "timestamp": "2026-07-31T12:40:45.446280+00:00"}
 {"id": "20260731_124108_b03d0bdf", "image_file": "images/20260731_124108_b03d0bdf.png", "predicted": "2 x + 4 =", "corrected": "\\cancel{2 x} + 4 =", "timestamp": "2026-07-31T12:41:08.331241+00:00"}

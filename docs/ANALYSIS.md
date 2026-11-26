@@ -142,7 +142,10 @@ CROHME 2014, 300 formule, beam 5 (stesso test della tabella del punto 1):
 Il `finetuned_checkpoint.ckpt` nel repo usa la configurazione
 dell'esperimento 2 allenata su **tutti** i 201 esempi (`--all-data`), perché
 molti simboli hanno 1-4 esempi e ognuno conta. La curva è stabile dalla 9ª
-alla 12ª epoca, quindi l'ultima epoca è una scelta sicura.
+alla 12ª epoca, quindi l'ultima epoca è una scelta sicura. Misure del
+checkpoint pubblicato: CROHME 2014 **57.3%** (300 formule, beam 5); sui 201
+esempi del dataset 98.5% (dati visti in training: conferma che i simboli
+nuovi sono stati appresi, con l'esperimento 1 era solo il 65%).
 
 ### Errori rimasti e come ridurli
 
@@ -154,6 +157,10 @@ Sui 35 esempi mai visti restano 6 errori: `Z`/`z` (2), `\max` scritto come
   `finetuning.py --check` mostra il conteggio e avvisa.
 - Tieni bilanciati i simboli simili (oggi 45 `\cap` contro 14 `\cup`).
 
-Etichette errate trovate grazie agli errori di validazione: `{5}` (che in
-MathJax non mostra le graffe) per l'insieme `\{5\}`. Il validatore ora segnala
-le graffe "nude".
+Etichette errate trovate confrontando le predizioni con le immagini (in
+tutti i casi il modello aveva ragione): `{5}` per l'insieme `\{5\}` (in
+MathJax `{5}` non mostra le graffe: il validatore ora lo segnala),
+`\{, 2 , \}` per `\{1,2,\}`, `R` per `\mathbb{R}`, `A \cap B` per
+`A \cup B`, `( \frac{n}{k} )` per `\binom{n}{k}`. In totale 8 etichette
+corrette su 201: un esempio confermato senza correggere insegna l'errore
+al modello.
