@@ -8,6 +8,11 @@ def default_dict():
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), "dictionary.txt")
 
 
+def read_dictionary(dict_path: str) -> List[str]:
+    with open(dict_path, "r", encoding="utf-8") as f:
+        return [line.strip() for line in f if line.strip()]
+
+
 class CROHMEVocab:
 
     PAD_IDX = 0
@@ -15,19 +20,30 @@ class CROHMEVocab:
     EOS_IDX = 2
 
     def __init__(self, dict_path: str = default_dict()) -> None:
+        self.load_words(read_dictionary(dict_path))
+
+    def load_words(self, words: List[str]) -> None:
+        """(Re)build the vocabulary from an ordered list of tokens.
+
+        The model's embedding / projection size must match ``len(self)``, so
+        this must be called BEFORE the model is built (see comer.inference).
+        """
         self.word2idx = dict()
         self.word2idx["<pad>"] = self.PAD_IDX
         self.word2idx["<sos>"] = self.SOS_IDX
         self.word2idx["<eos>"] = self.EOS_IDX
 
-        with open(dict_path, "r") as f:
-            for line in f.readlines():
-                w = line.strip()
-                self.word2idx[w] = len(self.word2idx)
+        for w in words:
+            if w in self.word2idx:
+                raise ValueError(f"duplicate token in dictionary: {w!r}")
+            self.word2idx[w] = len(self.word2idx)
 
         self.idx2word: Dict[int, str] = {v: k for k, v in self.word2idx.items()}
 
-        # print(f"Init vocab with size: {len(self.word2idx)}")
+    @property
+    def words(self) -> List[str]:
+        """Tokens without the 3 special ones, in index order."""
+        return [self.idx2word[i] for i in range(3, len(self.word2idx))]
 
     def words2indices(self, words: List[str]) -> List[int]:
         return [self.word2idx[w] for w in words]

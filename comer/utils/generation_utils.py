@@ -4,7 +4,7 @@ from typing import List, Tuple
 import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
-from comer.datamodule import vocab, vocab_size
+from comer.datamodule import vocab
 from comer.utils.utils import Hypothesis, ce_loss, to_tgt_output
 from einops import rearrange
 from einops.einops import repeat
@@ -186,6 +186,7 @@ class DecodeModel(pl.LightningModule):
             )
             # [b *, l, v]
             next_token_scores = F.log_softmax(next_token_logits, dim=-1)
+            vocab_size = next_token_scores.shape[-1]
 
             next_token_scores = next_token_scores + beam_scores[:, None].expand_as(
                 next_token_scores

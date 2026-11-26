@@ -5,7 +5,7 @@ import torch.nn as nn
 from einops import rearrange
 from torch import FloatTensor, LongTensor
 
-from comer.datamodule import vocab, vocab_size
+from comer.datamodule import vocab
 from comer.model.pos_enc import WordPosEnc
 from comer.model.transformer.arm import AttentionRefinementModule
 from comer.model.transformer.transformer_decoder import (
@@ -55,7 +55,7 @@ class Decoder(DecodeModel):
         super().__init__()
 
         self.word_embed = nn.Sequential(
-            nn.Embedding(vocab_size, d_model), nn.LayerNorm(d_model)
+            nn.Embedding(len(vocab), d_model), nn.LayerNorm(d_model)
         )
 
         self.pos_enc = WordPosEnc(d_model=d_model)
@@ -73,7 +73,7 @@ class Decoder(DecodeModel):
             self_coverage=self_coverage,
         )
 
-        self.proj = nn.Linear(d_model, vocab_size)
+        self.proj = nn.Linear(d_model, len(vocab))
 
     def _build_attention_mask(self, length):
         # lazily create causal attention mask, with full attention between the vision tokens
