@@ -162,8 +162,12 @@ def check_tokens(tokens: List[str], known: set) -> Tuple[bool, Optional[str]]:
     if not tokens:
         return False, "empty formula"
     depth = 0
-    for t in tokens:
+    for i, t in enumerate(tokens):
         if t == "{":
+            prev = tokens[i - 1] if i > 0 else ""
+            if not (prev in ("^", "_", "}") or prev.startswith("\\")):
+                # "{5}" non mostra graffe in MathJax: per un insieme serve \{ \}
+                return False, "graffe senza backslash (per un insieme scrivi \\{ ... \\})"
             depth += 1
         elif t == "}":
             depth -= 1

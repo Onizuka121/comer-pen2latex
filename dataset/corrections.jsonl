@@ -35,7 +35,7 @@
 {"id": "20260731_114324_734c0b0b", "image_file": "images/20260731_114324_734c0b0b.png", "predicted": "A M B", "corrected": "A \\cap B", "timestamp": "2026-07-31T11:43:24.905435+00:00"}
 {"id": "20260731_114349_f7d7ad13", "image_file": "images/20260731_114349_f7d7ad13.png", "predicted": "A 0 B", "corrected": "A \\cap B", "timestamp": "2026-07-31T11:43:49.446206+00:00"}
 {"id": "20260731_114405_f727421c", "image_file": "images/20260731_114405_f727421c.png", "predicted": "A u B", "corrected": "A \\cup B", "timestamp": "2026-07-31T11:44:05.210048+00:00"}
-{"id": "20260731_114431_292edc27", "image_file": "images/20260731_114431_292edc27.png", "predicted": "\\sum 5 3", "corrected": "{5}", "timestamp": "2026-07-31T11:44:31.119532+00:00"}
+{"id": "20260731_114431_292edc27", "image_file": "images/20260731_114431_292edc27.png", "predicted": "\\sum 5 3", "corrected": "\\{ 5 \\}", "timestamp": "2026-07-31T11:44:31.119532+00:00"}
 {"id": "20260731_114445_375fcb70", "image_file": "images/20260731_114445_375fcb70.png", "predicted": "\\sum 5 3", "corrected": "\\{5\\}", "timestamp": "2026-07-31T11:44:45.159405+00:00"}
 {"id": "20260731_114506_2863e1bd", "image_file": "images/20260731_114506_2863e1bd.png", "predicted": "\\sum 5 , 3 , 2 \\}", "corrected": "\\{ 5 , 3 , 2 \\}", "timestamp": "2026-07-31T11:45:06.048332+00:00"}
 {"id": "20260731_114545_6c21c9b7", "image_file": "images/20260731_114545_6c21c9b7.png", "predicted": "\\sum 2 , 3 , 4 , \\ldots , 5 3", "corrected": "\\{ 2 , 3 , 4 , \\dots , 5 \\}", "timestamp": "2026-07-31T11:45:45.688689+00:00"}

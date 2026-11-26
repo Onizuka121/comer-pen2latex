@@ -96,4 +96,46 @@ modificate e aspetta una pausa nella scrittura prima di chiamare il backend.
 
 ## Fine-tuning
 
-(risultati del nuovo fine-tuning: vedi sotto, aggiornati al termine del training)
+Esperimento con `finetuning.py` (12 epoche, replay CROHME 1:1): 166 esempi
+in training, **35 tenuti da parte e mai visti** per la misura.
+
+| epoca | tua scrittura (35 mai visti) | CROHME (150, beam 3) |
+|---|---|---|
+| prima (vocabolario esteso) | 28.6% | 60.7% |
+| 1 | 37.1% | 49.3% |
+| 4 | 51.4% | 56.7% |
+| 7 | **54.3%** | 55.3% |
+| 8 | **54.3%** | 58.7% |
+| 12 | 51.4% | 57.3% |
+
+Modello dell'epoca migliore, CROHME 2014 su 300 formule a beam 5 (stesso
+test della tabella del punto 1):
+
+| checkpoint | CROHME 2014 |
+|---|---|
+| CoMER originale | 63.7% |
+| vecchio fine-tuning | 23.0% |
+| **nuovo fine-tuning** | **59.3%** |
+
+La tua scrittura passa da 28.6% a 54.3% di formule esattamente giuste,
+quasi senza perdere la scrittura generale. Con 35 esempi di validazione ogni
+esempio vale ~3 punti: le oscillazioni tra epoche sono rumore.
+
+Il `finetuned_checkpoint.ckpt` nel repo è allenato con lo stesso schema su
+**tutti** i 201 esempi (`--all-data`), perché molti simboli hanno solo 1-4
+esempi e ognuno conta. La curva sopra è piatta dalla 7ª alla 12ª epoca, quindi
+l'ultima epoca è una scelta sicura.
+
+### Errori rimasti e come ridurli
+
+- **∪ scambiato per ∩**: nel dataset `\cap` compare 45 volte, `\cup` 14. Il
+  modello tende verso il simbolo più frequente: servono più esempi di ∪.
+- **Simboli con meno di 5 esempi** (`\ln`, `\max`, `\min`, `\subset`,
+  `\implies`, `\mathcal`, `\quad`, ...) non sono ancora appresi: `\max f(x)`
+  diventa `m a x f ( x )`. Servono ~10 esempi ciascuno.
+- `finetuning.py --check` mostra il conteggio per simbolo e avvisa per quelli
+  sotto i 5 esempi.
+
+Un'altra etichetta errata trovata dagli errori di validazione: `{5}` (che in
+MathJax non mostra le graffe) per l'insieme `\{5\}`. Il validatore ora
+segnala le graffe "nude".
