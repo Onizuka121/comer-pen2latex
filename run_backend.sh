@@ -1,23 +1,21 @@
 #!/usr/bin/env bash
-# Avvia il backend usando automaticamente l'ultimo checkpoint fine-tuned
-# se esiste, altrimenti quello originale pre-addestrato.
-#
+# Avvia il backend pen2latex (http://127.0.0.1:5005).
+# Usa finetuned_checkpoint.ckpt se esiste, altrimenti il modello originale
+# (la scelta la fa backend.py; COMER_CKPT=... per forzarne uno).
 # Uso: bash run_backend.sh
-# (va eseguito dalla cartella ~/comer-project/CoMER)
-set -e
+set -eo pipefail
+cd "$(dirname "$0")"
 
-source "$HOME/miniforge3/etc/profile.d/conda.sh"
-conda activate comer
-
-ORIGINAL_CKPT="lightning_logs/version_0/checkpoints/epoch=151-step=57151-val_ExpRate=0.6365.ckpt"
-FINETUNED_CKPT="finetuned_checkpoint.ckpt"
-
-if [ -f "$FINETUNED_CKPT" ]; then
-    echo "==> Uso il checkpoint fine-tuned: $FINETUNED_CKPT"
-    export COMER_CKPT="$FINETUNED_CKPT"
-else
-    echo "==> Nessun checkpoint fine-tuned trovato, uso l'originale."
-    export COMER_CKPT="$ORIGINAL_CKPT"
+ENV_NAME="${COMER_ENV:-comer}"
+if [ "${CONDA_DEFAULT_ENV:-}" != "$ENV_NAME" ]; then
+    for c in "$HOME/miniforge3" "$HOME/mambaforge" "$HOME/miniconda3" "$HOME/anaconda3" "/opt/conda"; do
+        if [ -f "$c/etc/profile.d/conda.sh" ]; then
+            # shellcheck disable=SC1090
+            source "$c/etc/profile.d/conda.sh"
+            conda activate "$ENV_NAME"
+            break
+        fi
+    done
 fi
 
-python backend.py
+exec python backend.py

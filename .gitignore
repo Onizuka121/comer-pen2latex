@@ -130,15 +130,13 @@ test_temp
 Results_pred_symlg
 *.tfevents.*
 
-# --- Aggiunte per il progetto pen2latex ---
+# --- pen2latex ---
+# (checkpoint, dataset e data.zip SONO nel repo apposta: setup in un comando)
 
-# Checkpoint del modello (pesanti, non vanno su git)
-*.ckpt
-lightning_logs/
-
-# Dataset personale raccolto dal plugin (immagini scritte a mano)
-dataset/
-
-# File pesanti del repo originale non necessari
-data.zip
-material/*.mp4
+# backup/temporanei creati da finetuning.py
+*.ckpt.bak
+*.ckpt.tmp
+# data.zip estratto a mano
+/data/
+# plugin: dipendenze di build
+plugin/pen2latex/node_modules/
